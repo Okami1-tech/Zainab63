@@ -2,334 +2,440 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unmeasurable Love 💜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Unmeasurable Love — Sarauniya</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+:root{
+    --purple:#a855f7;
+    --light-purple:#d8b4fe;
+    --deep:#050008;
 }
 
-html,body{
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
     width:100%;
     height:100%;
     overflow:hidden;
     background:#000;
-    color:#fff;
-    font-family:Georgia,"Times New Roman",serif;
 }
 
 body{
-    position:relative;
+    font-family:Georgia,"Times New Roman",serif;
+    color:white;
+    -webkit-font-smoothing:antialiased;
 }
 
-/* =========================
-   CANVAS
-========================= */
-
-canvas{
+#app{
     position:fixed;
     inset:0;
-    width:100%;
-    height:100%;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #16001f 0%,
+            #08000d 35%,
+            #000 75%
+        );
 }
 
-/* =========================
-   MAIN SCENE
-========================= */
+/* --------------------------------
+   STARS
+-------------------------------- */
 
-#scene{
-    position:fixed;
+#stars{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 8px rgba(216,180,254,.9);
+    opacity:.45;
+    will-change:transform,opacity;
+}
+
+.star.big{
+    width:3px;
+    height:3px;
+}
+
+/* --------------------------------
+   CENTRAL LIGHT
+-------------------------------- */
+
+#light{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:white;
+    transform:translate(-50%,-50%) scale(0);
+    box-shadow:
+        0 0 10px #fff,
+        0 0 35px var(--purple),
+        0 0 90px var(--purple);
+    transition:
+        transform 1.8s cubic-bezier(.16,1,.3,1),
+        opacity 1.2s ease;
+    z-index:2;
+}
+
+#light.visible{
+    transform:translate(-50%,-50%) scale(1);
+}
+
+#light.grow{
+    transform:translate(-50%,-50%) scale(10);
+    opacity:0;
+}
+
+/* --------------------------------
+   SCENES
+-------------------------------- */
+
+.scene{
+    position:absolute;
     inset:0;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
+    padding:28px;
     text-align:center;
-    padding:25px;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(18px) scale(.97);
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s cubic-bezier(.16,1,.3,1),
+        visibility 1.2s;
     z-index:5;
 }
 
-.content{
-    width:100%;
-    max-width:850px;
+.scene.active{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
 }
 
-/* =========================
-   INTRO
-========================= */
-
-#intro{
+.scene.leaving{
     opacity:0;
-    transform:scale(.8);
+    transform:translateY(-18px) scale(1.03);
 }
 
-#intro.show{
-    animation:introIn 2.2s ease forwards;
-}
+/* --------------------------------
+   INTRO
+-------------------------------- */
 
-@keyframes introIn{
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-.introSmall{
+.eyebrow{
     font-family:Arial,sans-serif;
-    text-transform:uppercase;
-    letter-spacing:5px;
+    color:var(--light-purple);
     font-size:11px;
-    color:#a855f7;
+    letter-spacing:5px;
+    text-transform:uppercase;
     margin-bottom:25px;
 }
 
-.introMain{
-    font-size:clamp(26px,7vw,55px);
-    line-height:1.25;
+.intro h1{
+    max-width:700px;
+    font-size:clamp(27px,7.5vw,58px);
+    line-height:1.22;
+    font-weight:400;
 }
 
-/* =========================
-   NUMBERS
-========================= */
-
-#measurement{
-    opacity:0;
-    transform:scale(.7);
+.intro h1 em{
+    color:var(--light-purple);
+    font-style:normal;
 }
 
-#measurement.show{
-    animation:measurementIn 1.5s ease forwards;
-}
+/* --------------------------------
+   MEASUREMENT
+-------------------------------- */
 
-@keyframes measurementIn{
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-.number{
+.measure-number{
     font-family:Arial,sans-serif;
-    font-size:clamp(42px,14vw,110px);
+    font-size:clamp(45px,16vw,120px);
     font-weight:700;
-    letter-spacing:-4px;
+    letter-spacing:-5px;
+    line-height:1;
     text-shadow:
-        0 0 15px #8a2be2,
-        0 0 50px rgba(138,43,226,.8);
+        0 0 20px rgba(168,85,247,.8),
+        0 0 70px rgba(168,85,247,.45);
+    transition:transform .35s ease;
 }
 
-.measureText{
-    margin-top:12px;
+.measure-label{
+    margin-top:22px;
     font-family:Arial,sans-serif;
-    font-size:13px;
+    color:#aaa;
+    font-size:11px;
     letter-spacing:4px;
     text-transform:uppercase;
-    color:#aaa;
 }
 
-.infinity{
-    color:#c084fc;
+.measure-number.pulse{
+    transform:scale(1.08);
 }
 
-/* =========================
-   LOVE
-========================= */
+/* --------------------------------
+   INFINITY
+-------------------------------- */
 
-#love{
-    opacity:0;
-    transform:scale(.2) rotate(-15deg);
-}
-
-#love.show{
-    animation:loveExplosion 2.5s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-@keyframes loveExplosion{
-    0%{
-        opacity:0;
-        transform:scale(.15) rotate(-20deg);
-    }
-
-    60%{
-        opacity:1;
-        transform:scale(1.12) rotate(3deg);
-    }
-
-    100%{
-        opacity:1;
-        transform:scale(1) rotate(0);
-    }
-}
-
-.loveWord{
+.infinity-symbol{
     font-family:Arial,sans-serif;
-    font-size:clamp(70px,25vw,230px);
-    line-height:.8;
-    font-weight:900;
-    letter-spacing:-8px;
-    color:#fff;
+    font-size:clamp(100px,35vw,260px);
+    font-weight:200;
+    line-height:.7;
+    color:white;
     text-shadow:
-        0 0 10px #fff,
-        0 0 30px #c084fc,
-        0 0 70px #8a2be2,
-        0 0 120px rgba(138,43,226,.8);
+        0 0 15px white,
+        0 0 45px var(--purple),
+        0 0 100px rgba(168,85,247,.8);
+    transition:
+        transform 1.8s cubic-bezier(.16,1,.3,1),
+        opacity 1.5s ease;
 }
 
-.loveSub{
-    margin-top:40px;
-    color:#c084fc;
-    font-size:14px;
-    letter-spacing:6px;
-    text-transform:uppercase;
-}
-
-/* =========================
-   SARAUNIYA
-========================= */
-
-#sarauniya{
+.infinity-symbol.break{
+    transform:scale(2.8) rotate(18deg);
     opacity:0;
-    transform:scale(.6);
 }
 
-#sarauniya.show{
-    animation:sarauniyaIn 2.5s cubic-bezier(.16,1,.3,1) forwards;
+/* --------------------------------
+   UNMEASURABLE
+-------------------------------- */
+
+.unmeasurable{
+    flex-direction:column;
 }
 
-@keyframes sarauniyaIn{
-    0%{
-        opacity:0;
-        transform:scale(.5);
-    }
-
-    60%{
-        opacity:1;
-        transform:scale(1.08);
-    }
-
-    100%{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-.sarauniyaName{
-    font-size:clamp(35px,10vw,80px);
-    font-weight:bold;
-    color:#d8a4ff;
-    text-shadow:
-        0 0 15px #c084fc,
-        0 0 40px #8a2be2,
-        0 0 90px rgba(138,43,226,.7);
-}
-
-.sarauniyaLine{
-    margin-top:25px;
-    font-size:clamp(18px,5vw,30px);
-    line-height:1.5;
-}
-
-/* =========================
-   FINAL
-========================= */
-
-#final{
-    opacity:0;
-    transform:scale(.4);
-}
-
-#final.show{
-    animation:finalIn 3s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-@keyframes finalIn{
-    0%{
-        opacity:0;
-        transform:scale(.3);
-    }
-
-    60%{
-        opacity:1;
-        transform:scale(1.06);
-    }
-
-    100%{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-.finalTitle{
+.unmeasurable-word{
     font-family:Arial,sans-serif;
-    font-size:clamp(32px,10vw,80px);
+    font-size:clamp(38px,11vw,100px);
+    line-height:.9;
     font-weight:900;
-    line-height:.95;
+    letter-spacing:-4px;
+    color:white;
     text-transform:uppercase;
-    letter-spacing:-2px;
+    transform:scale(.7);
+    opacity:0;
+    transition:
+        transform 1.6s cubic-bezier(.16,1,.3,1),
+        opacity 1.2s ease;
+    text-shadow:
+        0 0 20px rgba(216,180,254,.8),
+        0 0 60px rgba(168,85,247,.65);
 }
 
-.finalTitle span{
+.unmeasurable.active .unmeasurable-word{
+    transform:scale(1);
+    opacity:1;
+}
+
+.unmeasurable-word span{
     display:block;
-    color:#c084fc;
+    color:var(--light-purple);
+}
+
+.unmeasurable-caption{
+    margin-top:32px;
+    font-size:clamp(15px,4vw,20px);
+    color:#bbb;
+    opacity:0;
+    transform:translateY(15px);
+    transition:
+        opacity 1s ease .7s,
+        transform 1s ease .7s;
+}
+
+.unmeasurable.active .unmeasurable-caption{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* --------------------------------
+   SARAUNIYA
+-------------------------------- */
+
+.sarauniya-name{
+    font-size:clamp(42px,12vw,95px);
+    color:var(--light-purple);
     text-shadow:
-        0 0 20px #8a2be2,
-        0 0 60px rgba(138,43,226,.8);
+        0 0 20px rgba(168,85,247,.7),
+        0 0 70px rgba(168,85,247,.45);
+    transform:scale(.75);
+    opacity:0;
+    transition:
+        transform 1.8s cubic-bezier(.16,1,.3,1),
+        opacity 1.2s ease;
 }
 
-.finalText{
-    margin-top:35px;
-    font-size:clamp(16px,4.5vw,24px);
-    line-height:1.8;
-    color:#ddd;
+.sarauniya.active .sarauniya-name{
+    transform:scale(1);
+    opacity:1;
 }
 
-.finalText strong{
-    color:#fff;
+.sarauniya-line{
+    margin-top:25px;
+    font-size:clamp(18px,5vw,29px);
+    line-height:1.55;
+    color:#eee;
+    opacity:0;
+    transform:translateY(15px);
+    transition:
+        opacity 1s ease .8s,
+        transform 1s ease .8s;
+}
+
+.sarauniya.active .sarauniya-line{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* --------------------------------
+   FINAL
+-------------------------------- */
+
+.final{
+    align-items:center;
+}
+
+.final-card{
+    max-width:720px;
+}
+
+.final-small{
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    color:var(--light-purple);
+    margin-bottom:25px;
+}
+
+.final h2{
+    font-size:clamp(27px,7vw,52px);
+    line-height:1.3;
+    font-weight:400;
+}
+
+.final h2 strong{
+    color:var(--light-purple);
+    font-weight:400;
+}
+
+.final-copy{
+    margin:28px auto 0;
+    max-width:600px;
+    color:#cfcfcf;
+    font-size:clamp(15px,4.3vw,20px);
+    line-height:1.9;
+}
+
+.final-ending{
+    margin-top:30px;
+    color:white;
+    font-size:clamp(16px,4.5vw,22px);
+}
+
+.final-ending span{
+    color:var(--light-purple);
 }
 
 .signature{
-    margin-top:30px;
+    margin-top:20px;
     font-family:Arial,sans-serif;
-    font-size:12px;
+    font-size:10px;
     letter-spacing:4px;
     text-transform:uppercase;
-    color:#a855f7;
+    color:#8d5bb5;
 }
 
-/* =========================
-   FADE
-========================= */
+/* --------------------------------
+   FINAL GLOW
+-------------------------------- */
 
-#fade{
-    position:fixed;
-    inset:0;
-    background:#000;
-    z-index:100;
+#glow{
+    position:absolute;
+    width:55vw;
+    height:55vw;
+    max-width:500px;
+    max-height:500px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) scale(.5);
+    border-radius:50%;
+    background:radial-gradient(
+        circle,
+        rgba(168,85,247,.13) 0%,
+        rgba(168,85,247,.04) 35%,
+        transparent 70%
+    );
+    opacity:0;
+    transition:
+        opacity 2s ease,
+        transform 3s ease;
     pointer-events:none;
-    opacity:1;
-    transition:opacity 2s ease;
 }
 
-/* =========================
-   MOBILE
-========================= */
+#glow.on{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1.3);
+}
 
-@media(max-width:600px){
+/* --------------------------------
+   VIGNETTE
+-------------------------------- */
 
-    .introMain{
-        font-size:27px;
+#vignette{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:20;
+    background:
+        radial-gradient(
+            circle,
+            transparent 40%,
+            rgba(0,0,0,.75) 100%
+        );
+}
+
+/* --------------------------------
+   ACCESSIBILITY / PERFORMANCE
+-------------------------------- */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+    }
+}
+
+@media(max-width:380px){
+
+    .scene{
+        padding:22px;
     }
 
-    .loveWord{
-        letter-spacing:-5px;
-    }
-
-    .finalText{
-        max-width:340px;
-        margin-left:auto;
-        margin-right:auto;
+    .final-copy{
+        line-height:1.7;
     }
 }
 </style>
@@ -337,359 +443,239 @@ canvas{
 
 <body>
 
-<canvas id="canvas"></canvas>
+<div id="app">
 
-<div id="scene">
+    <div id="stars"></div>
+
+    <div id="glow"></div>
+
+    <div id="light"></div>
 
     <!-- INTRO -->
-    <div class="content" id="intro">
+    <section class="scene intro" id="intro">
+        <div>
+            <div class="eyebrow">For Sarauniya</div>
 
-        <div class="introSmall">
-            I tried something...
+            <h1>
+                I tried to find a way
+                to <em>measure</em>
+                what I feel for you.
+            </h1>
         </div>
+    </section>
 
-        <div class="introMain">
-            I tried to find a way<br>
-            to measure what I feel for you.
+
+    <!-- COUNTER -->
+    <section class="scene" id="counter">
+        <div>
+            <div class="measure-number" id="number">10</div>
+
+            <div class="measure-label">
+                surely this should be enough
+            </div>
         </div>
+    </section>
 
-    </div>
 
-
-    <!-- MEASUREMENT -->
-    <div class="content" id="measurement">
-
-        <div class="number" id="number">
-            10
+    <!-- INFINITY -->
+    <section class="scene" id="infinity">
+        <div class="infinity-symbol" id="infinitySymbol">
+            ∞
         </div>
-
-        <div class="measureText">
-            maybe this is enough...
-        </div>
-
-    </div>
+    </section>
 
 
-    <!-- LOVE -->
-    <div class="content" id="love">
+    <!-- UNMEASURABLE -->
+    <section class="scene unmeasurable" id="unmeasurable">
 
-        <div class="loveWord">
-            LOVE
-        </div>
-
-        <div class="loveSub">
-            apparently... I was wrong.
-        </div>
-
-    </div>
-
-
-    <!-- SARAUNIYA -->
-    <div class="content" id="sarauniya">
-
-        <div class="sarauniyaName">
-            Sarauniya
-        </div>
-
-        <div class="sarauniyaLine">
-            How do I put a number<br>
-            on something that has no end?
-        </div>
-
-    </div>
-
-
-    <!-- FINAL -->
-    <div class="content" id="final">
-
-        <div class="finalTitle">
+        <div class="unmeasurable-word">
             UNMEASURABLE
             <span>LOVE</span>
         </div>
 
-        <div class="finalText">
+        <div class="unmeasurable-caption">
+            I think I finally understand why numbers failed.
+        </div>
 
-            I could count every star in the sky.<br>
-            I could count every grain of sand.<br>
-            I could count every heartbeat I have left.
+    </section>
 
-            <br><br>
 
-            And somehow...
+    <!-- SARAUNIYA -->
+    <section class="scene sarauniya" id="sarauniya">
 
-            <br><br>
+        <div>
+            <div class="sarauniya-name">
+                Sarauniya
+            </div>
 
-            <strong>
-                it still wouldn't be enough
-                to measure what you mean to me.
-            </strong>
+            <div class="sarauniya-line">
+                You are not a number<br>
+                I could ever calculate.
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- FINAL -->
+    <section class="scene final" id="final">
+
+        <div class="final-card">
+
+            <div class="final-small">
+                One last thing
+            </div>
+
+            <h2>
+                I could count every star,
+                every heartbeat,
+                every second...
+
+                <br><br>
+
+                and still never reach
+                the <strong>amount of love</strong>
+                I have for you.
+            </h2>
+
+            <div class="final-copy">
+                Maybe that's what makes it beautiful.
+                Some things aren't meant to be measured.
+                They're meant to be felt.
+            </div>
+
+            <div class="final-ending">
+                My love for you has no number.
+                <span>💜</span>
+            </div>
+
+            <div class="signature">
+                Forever wouldn't be enough.
+            </div>
 
         </div>
 
-        <div class="signature">
-            Even forever isn't enough. 💜
-        </div>
+    </section>
 
-    </div>
+
+    <div id="vignette"></div>
 
 </div>
-
-<div id="fade"></div>
 
 
 <script>
 
-/* =========================================
-   CANVAS UNIVERSE
-========================================= */
+/* ==========================================
+   LIGHTWEIGHT STAR FIELD
+========================================== */
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const stars = document.getElementById("stars");
 
-let W,H;
+const STAR_COUNT =
+    window.innerWidth < 600 ? 85 : 125;
 
-function resize(){
-    W = canvas.width = window.innerWidth * devicePixelRatio;
-    H = canvas.height = window.innerHeight * devicePixelRatio;
+for(let i = 0; i < STAR_COUNT; i++){
 
-    canvas.style.width = window.innerWidth+"px";
-    canvas.style.height = window.innerHeight+"px";
+    const star = document.createElement("div");
 
-    ctx.setTransform(
-        devicePixelRatio,
-        0,
-        0,
-        devicePixelRatio,
-        0,
-        0
-    );
-}
+    star.className =
+        "star" +
+        (Math.random() > .86 ? " big" : "");
 
-resize();
+    star.style.left =
+        Math.random() * 100 + "%";
 
-window.addEventListener("resize",resize);
+    star.style.top =
+        Math.random() * 100 + "%";
 
+    star.style.opacity =
+        (.2 + Math.random() * .6).toFixed(2);
 
-/* =========================================
-   PARTICLES
-========================================= */
-
-const particles=[];
-
-const COUNT =
-    Math.min(
-        550,
-        Math.floor(
-            window.innerWidth *
-            window.innerHeight /
-            2600
-        )
-    );
-
-for(let i=0;i<COUNT;i++){
-
-    particles.push({
-        x:Math.random()*window.innerWidth,
-        y:Math.random()*window.innerHeight,
-
-        vx:(Math.random()-.5)*.25,
-        vy:(Math.random()-.5)*.25,
-
-        r:Math.random()*1.6+.2,
-
-        alpha:Math.random()*.7+.15,
-
-        targetX:0,
-        targetY:0,
-
-        mode:"space"
-    });
+    stars.appendChild(star);
 }
 
 
-/* =========================================
-   PARTICLE ANIMATION
-========================================= */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
-let animationMode="space";
+const light =
+    document.getElementById("light");
 
-function draw(){
+const glow =
+    document.getElementById("glow");
 
-    ctx.fillStyle="rgba(0,0,0,.25)";
-    ctx.fillRect(
-        0,
-        0,
-        window.innerWidth,
-        window.innerHeight
-    );
+const infinitySymbol =
+    document.getElementById("infinitySymbol");
 
-    const cx=window.innerWidth/2;
-    const cy=window.innerHeight/2;
+const number =
+    document.getElementById("number");
 
-    particles.forEach(p=>{
+const scenes = {
+    intro:document.getElementById("intro"),
+    counter:document.getElementById("counter"),
+    infinity:document.getElementById("infinity"),
+    unmeasurable:document.getElementById("unmeasurable"),
+    sarauniya:document.getElementById("sarauniya"),
+    final:document.getElementById("final")
+};
 
-        if(animationMode==="space"){
 
-            p.x += p.vx;
-            p.y += p.vy;
+/* ==========================================
+   SCENE CONTROL
+========================================== */
 
-            if(p.x<0) p.x=window.innerWidth;
-            if(p.x>window.innerWidth) p.x=0;
+let currentScene = null;
 
-            if(p.y<0) p.y=window.innerHeight;
-            if(p.y>window.innerHeight) p.y=0;
+function showScene(name){
+
+    Object.values(scenes).forEach(scene=>{
+
+        if(scene.id === name){
+
+            scene.classList.add("active");
+            scene.classList.remove("leaving");
+
+        }else{
+
+            if(scene.classList.contains("active")){
+                scene.classList.add("leaving");
+
+                setTimeout(()=>{
+                    scene.classList.remove("active");
+                    scene.classList.remove("leaving");
+                },1200);
+            }
         }
-
-
-        if(animationMode==="rush"){
-
-            const dx=cx-p.x;
-            const dy=cy-p.y;
-
-            const dist=Math.sqrt(dx*dx+dy*dy)||1;
-
-            p.vx += dx/dist*.035;
-            p.vy += dy/dist*.035;
-
-            p.vx *= 1.035;
-            p.vy *= 1.035;
-
-            p.x += p.vx;
-            p.y += p.vy;
-
-            p.alpha=Math.min(1,p.alpha+.015);
-        }
-
-
-        if(animationMode==="explode"){
-
-            p.vx *= .98;
-            p.vy *= .98;
-
-            p.x += p.vx;
-            p.y += p.vy;
-        }
-
-
-        if(animationMode==="galaxy"){
-
-            const dx=p.x-cx;
-            const dy=p.y-cy;
-
-            const dist=Math.sqrt(dx*dx+dy*dy)||1;
-
-            const angle=Math.atan2(dy,dx);
-
-            p.x += -Math.sin(angle)*.7;
-            p.y += Math.cos(angle)*.7;
-
-            p.x += dx/dist*.05;
-            p.y += dy/dist*.05;
-        }
-
-
-        ctx.beginPath();
-
-        ctx.arc(
-            p.x,
-            p.y,
-            p.r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle =
-            `rgba(190,120,255,${p.alpha})`;
-
-        ctx.shadowBlur=10;
-        ctx.shadowColor="rgba(150,70,255,.8)";
-
-        ctx.fill();
-
-        ctx.shadowBlur=0;
     });
 
-    requestAnimationFrame(draw);
-}
-
-draw();
-
-
-/* =========================================
-   PARTICLE EXPLOSION
-========================================= */
-
-function explode(){
-
-    const cx=window.innerWidth/2;
-    const cy=window.innerHeight/2;
-
-    particles.forEach(p=>{
-
-        const angle=
-            Math.atan2(
-                p.y-cy,
-                p.x-cx
-            );
-
-        const force=
-            Math.random()*7+2;
-
-        p.vx=
-            Math.cos(angle)*force;
-
-        p.vy=
-            Math.sin(angle)*force;
-    });
+    currentScene=name;
 }
 
 
-/* =========================================
-   SCENE HELPERS
-========================================= */
-
-function hideAll(){
-
-    document
-      .querySelectorAll(".content")
-      .forEach(el=>{
-          el.classList.remove("show");
-      });
-}
-
-function show(id){
-
-    hideAll();
-
-    document
-      .getElementById(id)
-      .classList.add("show");
-}
-
-
-/* =========================================
-   FADE IN
-========================================= */
+/* ==========================================
+   INTRO
+========================================== */
 
 setTimeout(()=>{
 
-    document
-      .getElementById("fade")
-      .style.opacity="0";
+    light.classList.add("visible");
 
-    show("intro");
-
-},700);
+},400);
 
 
-/* =========================================
-   MEASUREMENT COUNTER
-========================================= */
+setTimeout(()=>{
 
-const number=
-    document.getElementById("number");
+    showScene("intro");
 
-const values=[
+},1700);
+
+
+/* ==========================================
+   COUNTER
+========================================== */
+
+const numbers = [
     "10",
     "100",
     "1,000",
@@ -704,119 +690,161 @@ const values=[
 
 function runCounter(){
 
-    show("measurement");
+    showScene("counter");
 
-    let i=0;
+    let index=0;
 
     const timer=setInterval(()=>{
 
-        number.textContent=values[i];
+        number.classList.add("pulse");
 
-        i++;
+        setTimeout(()=>{
+            number.classList.remove("pulse");
+        },180);
 
-        if(i>=values.length){
+        number.textContent=numbers[index];
+
+        index++;
+
+        if(index >= numbers.length){
 
             clearInterval(timer);
 
-            number.classList.add("infinity");
-
             setTimeout(()=>{
 
-                animationMode="rush";
+                showInfinity();
 
-            },500);
-
-            setTimeout(()=>{
-
-                explode();
-
-                animationMode="explode";
-
-                show("love");
-
-            },1700);
+            },900);
         }
 
-    },420);
+    },330);
 }
 
 
-/* =========================================
-   TIMELINE
-========================================= */
+/* ==========================================
+   INFINITY
+========================================== */
+
+function showInfinity(){
+
+    showScene("infinity");
+
+    setTimeout(()=>{
+
+        infinitySymbol.classList.add("break");
+
+    },1900);
+
+    setTimeout(()=>{
+
+        infinitySymbol.classList.remove("break");
+
+        showScene("unmeasurable");
+
+        glow.classList.add("on");
+
+    },3000);
+}
+
+
+/* ==========================================
+   SARAUNIYA
+========================================== */
+
+function showSarauniya(){
+
+    glow.classList.remove("on");
+
+    showScene("sarauniya");
+
+}
+
+
+/* ==========================================
+   FINAL
+========================================== */
+
+function showFinal(){
+
+    glow.classList.add("on");
+
+    showScene("final");
+
+}
+
+
+/* ==========================================
+   MASTER TIMELINE
+========================================== */
+
+/*
+    0.4s     light
+    1.7s     intro
+    4.8s     counter
+    8.8s     infinity
+    12.0s    unmeasurable
+    15.5s    Sarauniya
+    20.0s    final
+*/
 
 setTimeout(()=>{
-
     runCounter();
+},4800);
 
-},3500);
-
-
-/*
-  LOVE stays for a while,
-  then everything becomes a galaxy.
-*/
 
 setTimeout(()=>{
-
-    animationMode="galaxy";
-
-    show("sarauniya");
-
-},10500);
-
-
-/*
-  Sarauniya reveal.
-*/
-
-setTimeout(()=>{
-
-    animationMode="rush";
-
-},13500);
-
-
-/*
-  FINAL MESSAGE
-*/
-
-setTimeout(()=>{
-
-    animationMode="space";
-
-    show("final");
-
+    showSarauniya();
 },15500);
 
 
-/* =========================================
-   FINAL PARTICLE BURST
-========================================= */
-
 setTimeout(()=>{
+    showFinal();
+},20000);
 
-    particles.forEach(p=>{
 
-        const cx=window.innerWidth/2;
-        const cy=window.innerHeight/2;
+/* ==========================================
+   SUBTLE STAR MOTION
 
-        const angle=
-            Math.random()*Math.PI*2;
+   Instead of hundreds of animated DOM
+   elements, we move only the whole star
+   layer. Much smoother on phones.
+========================================== */
 
-        const force=
-            Math.random()*4+.5;
+let starAngle=0;
 
-        p.x=cx;
-        p.y=cy;
+function moveStars(){
 
-        p.vx=Math.cos(angle)*force;
-        p.vy=Math.sin(angle)*force;
-    });
+    starAngle += .002;
 
-    animationMode="explode";
+    stars.style.transform =
+        `translate3d(
+            ${Math.sin(starAngle)*2}px,
+            ${Math.cos(starAngle)*2}px,
+            0
+        )`;
 
-},15700);
+    requestAnimationFrame(moveStars);
+}
+
+moveStars();
+
+
+/* ==========================================
+   TAP TO RESTART
+
+   If she taps after the final scene,
+   the experience starts again.
+========================================== */
+
+document.body.addEventListener("click",()=>{
+
+    if(currentScene === "final"){
+
+        location.reload();
+
+    }
+
+});
 
 </script>
 
