@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unmeasurable Love 💜</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    color:#fff;
+    font-family:Georgia,"Times New Roman",serif;
+}
+
+body{
+    position:relative;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+/* =========================
+   MAIN SCENE
+========================= */
+
+#scene{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:25px;
+    z-index:5;
+}
+
+.content{
+    width:100%;
+    max-width:850px;
+}
+
+/* =========================
+   INTRO
+========================= */
+
+#intro{
+    opacity:0;
+    transform:scale(.8);
+}
+
+#intro.show{
+    animation:introIn 2.2s ease forwards;
+}
+
+@keyframes introIn{
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.introSmall{
+    font-family:Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:5px;
+    font-size:11px;
+    color:#a855f7;
+    margin-bottom:25px;
+}
+
+.introMain{
+    font-size:clamp(26px,7vw,55px);
+    line-height:1.25;
+}
+
+/* =========================
+   NUMBERS
+========================= */
+
+#measurement{
+    opacity:0;
+    transform:scale(.7);
+}
+
+#measurement.show{
+    animation:measurementIn 1.5s ease forwards;
+}
+
+@keyframes measurementIn{
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.number{
+    font-family:Arial,sans-serif;
+    font-size:clamp(42px,14vw,110px);
+    font-weight:700;
+    letter-spacing:-4px;
+    text-shadow:
+        0 0 15px #8a2be2,
+        0 0 50px rgba(138,43,226,.8);
+}
+
+.measureText{
+    margin-top:12px;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#aaa;
+}
+
+.infinity{
+    color:#c084fc;
+}
+
+/* =========================
+   LOVE
+========================= */
+
+#love{
+    opacity:0;
+    transform:scale(.2) rotate(-15deg);
+}
+
+#love.show{
+    animation:loveExplosion 2.5s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes loveExplosion{
+    0%{
+        opacity:0;
+        transform:scale(.15) rotate(-20deg);
+    }
+
+    60%{
+        opacity:1;
+        transform:scale(1.12) rotate(3deg);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1) rotate(0);
+    }
+}
+
+.loveWord{
+    font-family:Arial,sans-serif;
+    font-size:clamp(70px,25vw,230px);
+    line-height:.8;
+    font-weight:900;
+    letter-spacing:-8px;
+    color:#fff;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 30px #c084fc,
+        0 0 70px #8a2be2,
+        0 0 120px rgba(138,43,226,.8);
+}
+
+.loveSub{
+    margin-top:40px;
+    color:#c084fc;
+    font-size:14px;
+    letter-spacing:6px;
+    text-transform:uppercase;
+}
+
+/* =========================
+   SARAUNIYA
+========================= */
+
+#sarauniya{
+    opacity:0;
+    transform:scale(.6);
+}
+
+#sarauniya.show{
+    animation:sarauniyaIn 2.5s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes sarauniyaIn{
+    0%{
+        opacity:0;
+        transform:scale(.5);
+    }
+
+    60%{
+        opacity:1;
+        transform:scale(1.08);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.sarauniyaName{
+    font-size:clamp(35px,10vw,80px);
+    font-weight:bold;
+    color:#d8a4ff;
+    text-shadow:
+        0 0 15px #c084fc,
+        0 0 40px #8a2be2,
+        0 0 90px rgba(138,43,226,.7);
+}
+
+.sarauniyaLine{
+    margin-top:25px;
+    font-size:clamp(18px,5vw,30px);
+    line-height:1.5;
+}
+
+/* =========================
+   FINAL
+========================= */
+
+#final{
+    opacity:0;
+    transform:scale(.4);
+}
+
+#final.show{
+    animation:finalIn 3s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes finalIn{
+    0%{
+        opacity:0;
+        transform:scale(.3);
+    }
+
+    60%{
+        opacity:1;
+        transform:scale(1.06);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.finalTitle{
+    font-family:Arial,sans-serif;
+    font-size:clamp(32px,10vw,80px);
+    font-weight:900;
+    line-height:.95;
+    text-transform:uppercase;
+    letter-spacing:-2px;
+}
+
+.finalTitle span{
+    display:block;
+    color:#c084fc;
+    text-shadow:
+        0 0 20px #8a2be2,
+        0 0 60px rgba(138,43,226,.8);
+}
+
+.finalText{
+    margin-top:35px;
+    font-size:clamp(16px,4.5vw,24px);
+    line-height:1.8;
+    color:#ddd;
+}
+
+.finalText strong{
+    color:#fff;
+}
+
+.signature{
+    margin-top:30px;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#a855f7;
+}
+
+/* =========================
+   FADE
+========================= */
+
+#fade{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:100;
+    pointer-events:none;
+    opacity:1;
+    transition:opacity 2s ease;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .introMain{
+        font-size:27px;
+    }
+
+    .loveWord{
+        letter-spacing:-5px;
+    }
+
+    .finalText{
+        max-width:340px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="scene">
+
+    <!-- INTRO -->
+    <div class="content" id="intro">
+
+        <div class="introSmall">
+            I tried something...
+        </div>
+
+        <div class="introMain">
+            I tried to find a way<br>
+            to measure what I feel for you.
+        </div>
+
+    </div>
+
+
+    <!-- MEASUREMENT -->
+    <div class="content" id="measurement">
+
+        <div class="number" id="number">
+            10
+        </div>
+
+        <div class="measureText">
+            maybe this is enough...
+        </div>
+
+    </div>
+
+
+    <!-- LOVE -->
+    <div class="content" id="love">
+
+        <div class="loveWord">
+            LOVE
+        </div>
+
+        <div class="loveSub">
+            apparently... I was wrong.
+        </div>
+
+    </div>
+
+
+    <!-- SARAUNIYA -->
+    <div class="content" id="sarauniya">
+
+        <div class="sarauniyaName">
+            Sarauniya
+        </div>
+
+        <div class="sarauniyaLine">
+            How do I put a number<br>
+            on something that has no end?
+        </div>
+
+    </div>
+
+
+    <!-- FINAL -->
+    <div class="content" id="final">
+
+        <div class="finalTitle">
+            UNMEASURABLE
+            <span>LOVE</span>
+        </div>
+
+        <div class="finalText">
+
+            I could count every star in the sky.<br>
+            I could count every grain of sand.<br>
+            I could count every heartbeat I have left.
+
+            <br><br>
+
+            And somehow...
+
+            <br><br>
+
+            <strong>
+                it still wouldn't be enough
+                to measure what you mean to me.
+            </strong>
+
+        </div>
+
+        <div class="signature">
+            Even forever isn't enough. 💜
+        </div>
+
+    </div>
+
+</div>
+
+<div id="fade"></div>
+
+
+<script>
+
+/* =========================================
+   CANVAS UNIVERSE
+========================================= */
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let W,H;
+
+function resize(){
+    W = canvas.width = window.innerWidth * devicePixelRatio;
+    H = canvas.height = window.innerHeight * devicePixelRatio;
+
+    canvas.style.width = window.innerWidth+"px";
+    canvas.style.height = window.innerHeight+"px";
+
+    ctx.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+    );
+}
+
+resize();
+
+window.addEventListener("resize",resize);
+
+
+/* =========================================
+   PARTICLES
+========================================= */
+
+const particles=[];
+
+const COUNT =
+    Math.min(
+        550,
+        Math.floor(
+            window.innerWidth *
+            window.innerHeight /
+            2600
+        )
+    );
+
+for(let i=0;i<COUNT;i++){
+
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+
+        vx:(Math.random()-.5)*.25,
+        vy:(Math.random()-.5)*.25,
+
+        r:Math.random()*1.6+.2,
+
+        alpha:Math.random()*.7+.15,
+
+        targetX:0,
+        targetY:0,
+
+        mode:"space"
+    });
+}
+
+
+/* =========================================
+   PARTICLE ANIMATION
+========================================= */
+
+let animationMode="space";
+
+function draw(){
+
+    ctx.fillStyle="rgba(0,0,0,.25)";
+    ctx.fillRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    const cx=window.innerWidth/2;
+    const cy=window.innerHeight/2;
+
+    particles.forEach(p=>{
+
+        if(animationMode==="space"){
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if(p.x<0) p.x=window.innerWidth;
+            if(p.x>window.innerWidth) p.x=0;
+
+            if(p.y<0) p.y=window.innerHeight;
+            if(p.y>window.innerHeight) p.y=0;
+        }
+
+
+        if(animationMode==="rush"){
+
+            const dx=cx-p.x;
+            const dy=cy-p.y;
+
+            const dist=Math.sqrt(dx*dx+dy*dy)||1;
+
+            p.vx += dx/dist*.035;
+            p.vy += dy/dist*.035;
+
+            p.vx *= 1.035;
+            p.vy *= 1.035;
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            p.alpha=Math.min(1,p.alpha+.015);
+        }
+
+
+        if(animationMode==="explode"){
+
+            p.vx *= .98;
+            p.vy *= .98;
+
+            p.x += p.vx;
+            p.y += p.vy;
+        }
+
+
+        if(animationMode==="galaxy"){
+
+            const dx=p.x-cx;
+            const dy=p.y-cy;
+
+            const dist=Math.sqrt(dx*dx+dy*dy)||1;
+
+            const angle=Math.atan2(dy,dx);
+
+            p.x += -Math.sin(angle)*.7;
+            p.y += Math.cos(angle)*.7;
+
+            p.x += dx/dist*.05;
+            p.y += dy/dist*.05;
+        }
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.r,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle =
+            `rgba(190,120,255,${p.alpha})`;
+
+        ctx.shadowBlur=10;
+        ctx.shadowColor="rgba(150,70,255,.8)";
+
+        ctx.fill();
+
+        ctx.shadowBlur=0;
+    });
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+
+/* =========================================
+   PARTICLE EXPLOSION
+========================================= */
+
+function explode(){
+
+    const cx=window.innerWidth/2;
+    const cy=window.innerHeight/2;
+
+    particles.forEach(p=>{
+
+        const angle=
+            Math.atan2(
+                p.y-cy,
+                p.x-cx
+            );
+
+        const force=
+            Math.random()*7+2;
+
+        p.vx=
+            Math.cos(angle)*force;
+
+        p.vy=
+            Math.sin(angle)*force;
+    });
+}
+
+
+/* =========================================
+   SCENE HELPERS
+========================================= */
+
+function hideAll(){
+
+    document
+      .querySelectorAll(".content")
+      .forEach(el=>{
+          el.classList.remove("show");
+      });
+}
+
+function show(id){
+
+    hideAll();
+
+    document
+      .getElementById(id)
+      .classList.add("show");
+}
+
+
+/* =========================================
+   FADE IN
+========================================= */
+
+setTimeout(()=>{
+
+    document
+      .getElementById("fade")
+      .style.opacity="0";
+
+    show("intro");
+
+},700);
+
+
+/* =========================================
+   MEASUREMENT COUNTER
+========================================= */
+
+const number=
+    document.getElementById("number");
+
+const values=[
+    "10",
+    "100",
+    "1,000",
+    "10,000",
+    "100,000",
+    "1,000,000",
+    "10,000,000",
+    "100,000,000",
+    "1,000,000,000",
+    "∞"
+];
+
+function runCounter(){
+
+    show("measurement");
+
+    let i=0;
+
+    const timer=setInterval(()=>{
+
+        number.textContent=values[i];
+
+        i++;
+
+        if(i>=values.length){
+
+            clearInterval(timer);
+
+            number.classList.add("infinity");
+
+            setTimeout(()=>{
+
+                animationMode="rush";
+
+            },500);
+
+            setTimeout(()=>{
+
+                explode();
+
+                animationMode="explode";
+
+                show("love");
+
+            },1700);
+        }
+
+    },420);
+}
+
+
+/* =========================================
+   TIMELINE
+========================================= */
+
+setTimeout(()=>{
+
+    runCounter();
+
+},3500);
+
+
+/*
+  LOVE stays for a while,
+  then everything becomes a galaxy.
+*/
+
+setTimeout(()=>{
+
+    animationMode="galaxy";
+
+    show("sarauniya");
+
+},10500);
+
+
+/*
+  Sarauniya reveal.
+*/
+
+setTimeout(()=>{
+
+    animationMode="rush";
+
+},13500);
+
+
+/*
+  FINAL MESSAGE
+*/
+
+setTimeout(()=>{
+
+    animationMode="space";
+
+    show("final");
+
+},15500);
+
+
+/* =========================================
+   FINAL PARTICLE BURST
+========================================= */
+
+setTimeout(()=>{
+
+    particles.forEach(p=>{
+
+        const cx=window.innerWidth/2;
+        const cy=window.innerHeight/2;
+
+        const angle=
+            Math.random()*Math.PI*2;
+
+        const force=
+            Math.random()*4+.5;
+
+        p.x=cx;
+        p.y=cy;
+
+        p.vx=Math.cos(angle)*force;
+        p.vy=Math.sin(angle)*force;
+    });
+
+    animationMode="explode";
+
+},15700);
+
+</script>
+
+</body>
+</html>
